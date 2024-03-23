@@ -7,9 +7,9 @@ import (
 	"testing"
 )
 
-func TestIfElseExpression(t * testing.T) {
+func TestIfElseExpression(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected interface{}
 	}{
 		{"if (true) { 10 }", 10},
@@ -91,7 +91,7 @@ func TestBooleanExpression(t *testing.T) {
 
 func TestBangOperator(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected bool
 	}{
 		{"!true", false},
@@ -105,6 +105,32 @@ func TestBangOperator(t *testing.T) {
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
 		testBooleanObject(t, evaluated, tt.expected)
+	}
+}
+
+func TestReturnStatements(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{"return 10;", 10},
+		{"return 10; 9;", 10},
+		{
+			`
+if (10 > 1) {
+	if (10 > 1) {
+		return 10;
+	}
+	return 1;
+}
+`,
+			10,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testIntegerObject(t, evaluated, tt.expected)
 	}
 }
 
